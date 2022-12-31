@@ -12,9 +12,15 @@ var connectionString = builder.Configuration.GetConnectionString("ApplicationDbC
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<HospitalDbContext>();
+builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddMediatR(typeof(GetVisits.Handler).Assembly);
 builder.Services.AddMediatR(typeof(GetSingleVisit.Handler).Assembly);
 builder.Services.AddMediatR(typeof(CreateVisit.Handler).Assembly);
