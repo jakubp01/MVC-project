@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MVC_Hospital_project.Areas.Identity.Data;
+using MVC_Hospital_project.Entities;
 
 namespace MVC_Hospital_project.Areas.Identity.Data;
 
@@ -12,11 +13,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         : base(options)
     {
     }
-
+    public DbSet<Doctor> Doctors { get; set; }
+    public DbSet<Patient> Patients { get; set; }
+    public DbSet<Visit> Visits { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
+
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

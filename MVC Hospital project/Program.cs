@@ -5,6 +5,7 @@ using MVC_Hospital_project.Queries;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC_Hospital_project.Areas.Identity.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
@@ -26,7 +27,7 @@ builder.Services.AddMediatR(typeof(GetSingleVisit.Handler).Assembly);
 builder.Services.AddMediatR(typeof(CreateVisit.Handler).Assembly);
 builder.Services.AddMediatR(typeof(UpdateVisit.Handler).Assembly);
 builder.Services.AddMediatR(typeof(DeleteVisit.Handler).Assembly);
-
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 Seeder.seed(app);

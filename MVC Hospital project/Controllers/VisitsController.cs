@@ -5,22 +5,31 @@ using Hospital.DbContextAndBuilders.ApiDbContext;
 using MVC_Hospital_project.Entities;
 using Hospital.Controllers;
 using MVC_Hospital_project.Queries;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using MVC_Hospital_project.Areas.Identity.Data;
+using System.Security.Claims;
 
 namespace MVC_Hospital_project.Controllers
 {
+    [Authorize]
     public class VisitsController : BaseController
     {
-        private readonly HospitalDbContext _context;
 
-        public VisitsController(HospitalDbContext context)
+        private readonly HospitalDbContext _context;
+        
+        
+        public VisitsController(HospitalDbContext context,IHttpContextAccessor httpContext)
         {
             _context = context;
+            
         }
 
         
         public async Task<IActionResult> Index()
         {
-            var visits =  Mediator.Send(new GetVisits.Query()).Result.Value;
+           
+            var visits =  (await Mediator.Send(new GetVisits.Query())).Value;
             return View(visits);
         }
 

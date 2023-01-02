@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MVC_Hospital_project.Core;
 using MVC_Hospital_project.Entities;
 using MVC_Hospital_project.Models;
+using System.Security.Claims;
 
 namespace MVC_Hospital_project.Queries
 {
@@ -18,17 +19,20 @@ namespace MVC_Hospital_project.Queries
         public class Handler : IRequestHandler<Query, Result<List<Visit>>>
         {
             private readonly HospitalDbContext _context;
-            
-            public Handler(HospitalDbContext context)
+            private readonly IHttpContextAccessor _httpContext;
+            public Handler(HospitalDbContext context, IHttpContextAccessor httpContext)
             {
                 _context = context;
+                _httpContext = httpContext;
             }
 
             public async Task<Result<List<Visit>>> Handle(Query request, CancellationToken cancellationToken)
             {
+                var userid = _httpContext.HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
                 var response = await _context.Visits
                     .Include(r => r.Doctor)
                     .Include(r => r.Patient)
+                    .Where(r=>r.Doctor.IdentificationNumber== userid)
                     .ToListAsync(cancellationToken: cancellationToken);
                 if (response != null)
                 {

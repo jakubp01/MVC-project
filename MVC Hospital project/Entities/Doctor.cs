@@ -9,7 +9,7 @@ namespace MVC_Hospital_project.Entities
         public string Name { get; set; }
 
         public string Specialization { get; set; }
-
+        
         public string ContactNumber { get; set; }
 
         public string IdentificationNumber { get; set; }
