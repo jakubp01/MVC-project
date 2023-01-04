@@ -2,10 +2,10 @@ using Hospital;
 using Hospital.DbContextAndBuilders.ApiDbContext;
 using MediatR;
 using MVC_Hospital_project.Queries;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC_Hospital_project.Areas.Identity.Data;
-using Microsoft.Extensions.DependencyInjection;
+using MVC_Hospital_project.Subject;
+using MVC_Hospital_project.Notification;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
@@ -14,6 +14,8 @@ var connectionString = builder.Configuration.GetConnectionString("ApplicationDbC
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<HospitalDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddSingleton<INotificationHandler, NotificationHandler>();
+builder.Services.AddSingleton<IVisitEdited, EditedVisit>();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
 options.SignIn.RequireConfirmedAccount = false;

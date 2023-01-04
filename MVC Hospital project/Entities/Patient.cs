@@ -1,7 +1,7 @@
 ﻿using System;
 namespace MVC_Hospital_project.Entities
 {
-    public class Patient
+    public class Patient 
     {
         public int Id { get; set; }
 
@@ -12,5 +12,7 @@ namespace MVC_Hospital_project.Entities
         public string Gender { get; set; }
       
         public DateTime DateOfBirth { get; set; }
+
+       
     }
 }

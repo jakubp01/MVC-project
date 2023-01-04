@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using MVC_Hospital_project.Entities;
-using MVC_Hospital_project.Models;
+
 
 namespace Hospital.DbContextAndBuilders.ApiDbContext
 {

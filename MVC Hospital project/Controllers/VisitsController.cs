@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MVC_Hospital_project.Areas.Identity.Data;
 using System.Security.Claims;
+using MVC_Hospital_project.Subject;
+using MVC_Hospital_project.Notification;
 
 namespace MVC_Hospital_project.Controllers
 {
@@ -17,12 +19,14 @@ namespace MVC_Hospital_project.Controllers
     {
 
         private readonly HospitalDbContext _context;
-        
-        
-        public VisitsController(HospitalDbContext context,IHttpContextAccessor httpContext)
+        private readonly IVisitEdited _editedVisit;
+        private readonly INotificationHandler _notificationHandler;
+
+        public VisitsController(HospitalDbContext context, IVisitEdited editedVisit, INotificationHandler notificationHandler)
         {
             _context = context;
-            
+            _editedVisit = editedVisit;
+            _notificationHandler = notificationHandler;
         }
 
         
@@ -86,6 +90,7 @@ namespace MVC_Hospital_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,DateOfVisit,DoctorId,PatientId")] Visit visit)
         {
+            
             if (id != visit.Id)
             {
                 return NotFound();
@@ -96,6 +101,7 @@ namespace MVC_Hospital_project.Controllers
                 try
                 {
                     await Mediator.Send(new UpdateVisit.Query { visit = visit });
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -108,10 +114,12 @@ namespace MVC_Hospital_project.Controllers
                         throw;
                     }
                 }
+                _editedVisit.NotifyObserver(visit);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", visit.DoctorId);
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", visit.PatientId);
+            
             return View(visit);
         }
 

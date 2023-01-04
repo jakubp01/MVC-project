@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Hospital.DbContextAndBuilders.ApiDbContext;
+﻿using Hospital.DbContextAndBuilders.ApiDbContext;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MVC_Hospital_project.Core;
 using MVC_Hospital_project.Entities;
-using MVC_Hospital_project.Models;
 using System.Security.Claims;
 
 namespace MVC_Hospital_project.Queries
